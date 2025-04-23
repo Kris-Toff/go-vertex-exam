@@ -38,7 +38,7 @@ func dateHandler(w http.ResponseWriter, r *http.Request) {
 	// Parse the input string
 	parsedTime, err := time.Parse(layout, dateStr)
 	if err != nil {
-		http.Error(w, "Error parsing date:", http.StatusBadRequest)
+		http.Error(w, "Error parsing date", http.StatusBadRequest)
 		return
 	}
 
