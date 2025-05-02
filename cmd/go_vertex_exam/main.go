@@ -7,10 +7,12 @@ import (
 	"time"
 )
 
-type DateData struct {
+type dayDate struct {
 	Day  string
 	Date string
 }
+
+type thousandDateData []dayDate
 
 func main() {
 	http.HandleFunc("/", dateHandler)
@@ -42,12 +44,16 @@ func dateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dateThousandDays := parsedTime.AddDate(0, 0, 1000) // add date by 1000 days
+	thousandDateSlice := thousandDateData{}
 
-	data := DateData{
-		Day:  dateThousandDays.Format("Monday"), // format day of the week
-		Date: dateThousandDays.Format(layout),   // format back to DD/MM/YYYY
+	for i := 0; i <= 1000; i++ {
+		day := parsedTime.AddDate(0, 0, i) // add date by 1 day
+
+		thousandDateSlice = append(thousandDateSlice, dayDate{
+			Day:  day.Format("Monday"), // format day of the week
+			Date: day.Format(layout),   // format back to DD/MM/YYYY
+		})
 	}
 
-	json.NewEncoder(w).Encode(data)
+	json.NewEncoder(w).Encode(thousandDateSlice)
 }
